@@ -1,7 +1,5 @@
 function init(self)
-	-- Add initialization code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
+	self.border_type = nil
 end
 
 function final(self)
@@ -32,7 +30,11 @@ function fixed_update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
-	if message_id == hash("trigger_response") then print("collision!") end
+	if message_id == hash("trigger_response") then msg.post(message.other_id, "get_away", {border=self.border_type}) end
+	if message_id == hash("top_border") then self.border_type = "top_border" end
+	if message_id == hash("bottom_border") then self.border_type = "bottom_border" end
+	if message_id == hash("left_border") then self.border_type = "left_border" end
+	if message_id == hash("right_border") then self.border_type = "right_border" end
 end
 
 function on_input(self, action_id, action)

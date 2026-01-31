@@ -1,7 +1,8 @@
 function init(self)
-	-- Add initialization code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
+	msg.post("top_border", "top_border")
+	msg.post("bottom_border", "bottom_border")
+	msg.post("left_border", "left_border")
+	msg.post("right_border", "right_border")
 end
 
 function final(self)
