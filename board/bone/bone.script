@@ -1,0 +1,61 @@
+function init(self)
+	msg.post(".", "acquire_input_focus") -- obviously every bone can't have input so change this later
+	self.size = 50
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	-- Add update code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function fixed_update(self, dt)
+	-- This function is called if 'Fixed Update Frequency' is enabled in the Engine section of game.project
+	-- Can be coupled with fixed updates of the physics simulation if 'Use Fixed Timestep' is enabled in
+	-- Physics section of game.project
+	-- Add update code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function on_message(self, message_id, message, sender)
+end
+
+
+local function is_overlap(action, size)
+	local pos = go.get_position()
+	local y_up = pos.y + size/2
+	local y_down = pos.y - size/2
+	local x_up = pos.x + size/2
+	local x_down = pos.x - size/2
+	local x_on_line = action.x < x_up and action.x > x_down
+	local y_on_line = action.y < y_up and action.y > y_down
+	return x_on_line and y_on_line
+end
+
+local function get_random_position()
+	local pos = go.get_position()
+	local x = math.random(-300,300)
+	local y = math.random(-300,300)
+	return vmath.vector3(pos.x - x,pos.y - y,0)
+end
+
+function on_input(self, action_id, action)
+	if action_id == hash("touch") and action.pressed and is_overlap(action,self.size) then
+		local to = get_random_position()
+		go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, to, go.EASING_OUTQUAD, 0.7)
+		print("animated")
+	end
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Learn more: https://defold.com/manuals/hot-reload/
+	-- Remove this function if not needed
+end
