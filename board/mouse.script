@@ -1,5 +1,5 @@
 function init(self)
-	self.border_type = nil
+	msg.post(".","acquire_input_focus")
 end
 
 function final(self)
@@ -30,23 +30,14 @@ function fixed_update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
-	if message_id == hash("trigger_response") then msg.post(message.other_id, "get_away", {border=self.border_type}) end
-	if message_id == hash("top_border") then self.border_type = "top_border" end
-	if message_id == hash("bottom_border") then self.border_type = "bottom_border" end
-	if message_id == hash("left_border") then self.border_type = "left_border" end
-	if message_id == hash("right_border") then self.border_type = "right_border" end
 end
 
 function on_input(self, action_id, action)
-	-- Add input-handling code here. The game object this script is attached to
-	-- must have acquired input focus:
-	--
-	--    msg.post(".", "acquire_input_focus")
-	--
-	-- All mapped input bindings will be received. Mouse and touch input will
-	-- be received regardless of where on the screen it happened.
-	-- Learn more: https://defold.com/manuals/input/
-	-- Remove this function if not needed
+	local pos = vmath.vector3(action.x, action.y, 0)
+	go.set_position(pos)
+	if action_id == hash("touch") and action.pressed then
+		msg.post("bone", "clicked_bone", {action=action})
+	end
 end
 
 function on_reload(self)
