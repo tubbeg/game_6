@@ -3,6 +3,13 @@ instances {
   id: "bone"
   prototype: "/board/bone/bone.go"
 }
+instances {
+  id: "bone1"
+  prototype: "/board/bone/bone.go"
+  position {
+    y: 261.0
+  }
+}
 scale_along_z: 0
 embedded_instances {
   id: "main"

@@ -1,5 +1,8 @@
 function init(self)
 	self.mouse_overlap = false
+	local my_id = msg.url(nil, go.get_id(), nil)
+	msg.post("mouse", "add_bone", {bone_url=my_id})
+	self.scoring = false
 end
 
 function final(self)
@@ -55,10 +58,24 @@ local function apply_rot_force_on_bone()
 end
 
 
+local function wall_or_mouse(message)
+	return 
+	message.other_id == go.get_id("mouse") or message.other_id == go.get_id("border")
+end
+
 function on_message(self, message_id, message, sender)
+	if message_id == hash("collision_response") then
+		--print(message.other_id)
+		if not wall_or_mouse(message) and not self.scoring then 
+			print("SCORE COLLISION!")
+			self.scoring = true
+			timer.delay(1, false, function () self.scoring = false end)
+		end
+	end
 	if message_id == hash("clicked_bone") and self.mouse_overlap then
 		apply_force_on_bone()
 		apply_rot_force_on_bone()
+		print("SCORE!")
 	end
 	if message_id == hash("trigger_response") and message.enter then
 		self.mouse_overlap = true
