@@ -19,7 +19,7 @@ embedded_components {
   data: "type: COLLISION_OBJECT_TYPE_DYNAMIC\n"
   "mass: 1.0\n"
   "friction: 0.1\n"
-  "restitution: 0.5\n"
+  "restitution: 0.2\n"
   "group: \"bone\"\n"
   "mask: \"bounds\"\n"
   "mask: \"bone\"\n"
