@@ -5,7 +5,7 @@ components {
 embedded_components {
   id: "sprite"
   type: "sprite"
-  data: "default_animation: \"logo\"\n"
+  data: "default_animation: \"bone\"\n"
   "material: \"/builtins/materials/sprite.material\"\n"
   "textures {\n"
   "  sampler: \"texture_sampler\"\n"
@@ -28,15 +28,22 @@ embedded_components {
   "  shapes {\n"
   "    shape_type: TYPE_BOX\n"
   "    position {\n"
+  "      y: 3.0\n"
   "    }\n"
   "    rotation {\n"
   "    }\n"
   "    index: 0\n"
   "    count: 3\n"
   "  }\n"
-  "  data: 10.0\n"
-  "  data: 10.0\n"
+  "  data: 19.344202\n"
+  "  data: 7.459592\n"
   "  data: 10.0\n"
   "}\n"
+  ""
+}
+embedded_components {
+  id: "factory"
+  type: "factory"
+  data: "prototype: \"/board/score/score.go\"\n"
   ""
 }

@@ -2,12 +2,19 @@ name: "board"
 instances {
   id: "bone"
   prototype: "/board/bone/bone.go"
+  position {
+    x: 302.0
+    y: 456.0
+    z: 1.0
+  }
 }
 instances {
   id: "bone1"
   prototype: "/board/bone/bone.go"
   position {
+    x: 268.0
     y: 261.0
+    z: 1.0
   }
 }
 scale_along_z: 0
@@ -34,7 +41,8 @@ embedded_instances {
   "  shapes {\\n"
   "    shape_type: TYPE_BOX\\n"
   "    position {\\n"
-  "      y: 843.0\\n"
+  "      x: 285.0\\n"
+  "      y: -72.0\\n"
   "    }\\n"
   "    rotation {\\n"
   "    }\\n"
@@ -44,7 +52,8 @@ embedded_instances {
   "  shapes {\\n"
   "    shape_type: TYPE_BOX\\n"
   "    position {\\n"
-  "      y: 1648.0\\n"
+  "      x: 332.0\\n"
+  "      y: 689.0\\n"
   "    }\\n"
   "    rotation {\\n"
   "    }\\n"
@@ -54,8 +63,8 @@ embedded_instances {
   "  shapes {\\n"
   "    shape_type: TYPE_BOX\\n"
   "    position {\\n"
-  "      x: -454.0\\n"
-  "      y: 1016.0\\n"
+  "      x: 890.0\\n"
+  "      y: 354.0\\n"
   "    }\\n"
   "    rotation {\\n"
   "    }\\n"
@@ -65,8 +74,8 @@ embedded_instances {
   "  shapes {\\n"
   "    shape_type: TYPE_BOX\\n"
   "    position {\\n"
-  "      x: 528.0\\n"
-  "      y: 1016.0\\n"
+  "      x: -84.0\\n"
+  "      y: 354.0\\n"
   "    }\\n"
   "    rotation {\\n"
   "    }\\n"
@@ -80,18 +89,15 @@ embedded_instances {
   "  data: 80.37045\\n"
   "  data: 10.0\\n"
   "  data: 94.02142\\n"
-  "  data: 1081.2286\\n"
+  "  data: 464.16287\\n"
   "  data: 10.0\\n"
   "  data: 94.02142\\n"
-  "  data: 1081.2286\\n"
+  "  data: 464.16287\\n"
   "  data: 10.0\\n"
   "}\\n"
   "\"\n"
   "}\n"
   ""
-  position {
-    y: -1185.0
-  }
 }
 embedded_instances {
   id: "mouse"
@@ -124,19 +130,17 @@ embedded_instances {
   "}\\n"
   "\"\n"
   "}\n"
-  "embedded_components {\n"
-  "  id: \"sprite\"\n"
-  "  type: \"sprite\"\n"
-  "  data: \"default_animation: \\\"logo\\\"\\n"
-  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
-  "textures {\\n"
-  "  sampler: \\\"texture_sampler\\\"\\n"
-  "  texture: \\\"/board/bone/bone.atlas\\\"\\n"
-  "}\\n"
-  "\"\n"
-  "}\n"
   ""
   position {
-    x: -178.0
+    x: 173.0
+    y: 488.0
   }
+}
+embedded_instances {
+  id: "background"
+  data: "components {\n"
+  "  id: \"board\"\n"
+  "  component: \"/board/board.tilemap\"\n"
+  "}\n"
+  ""
 }

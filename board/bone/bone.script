@@ -67,7 +67,9 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("collision_response") then
 		--print(message.other_id)
 		if not wall_or_mouse(message) and not self.scoring then 
-			print("SCORE COLLISION!")
+			local pos = go.get_position()
+			local id = factory.create("#factory", vmath.vector3(pos.x,pos.y,pos.z + 1))
+			msg.post(id, "bones",{nr=2})
 			self.scoring = true
 			timer.delay(1, false, function () self.scoring = false end)
 		end
@@ -75,7 +77,9 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("clicked_bone") and self.mouse_overlap then
 		apply_force_on_bone()
 		apply_rot_force_on_bone()
-		print("SCORE!")
+		local pos = go.get_position()
+		local id = factory.create("#factory", vmath.vector3(pos.x,pos.y,pos.z + 1))
+		msg.post(id, "bones",{nr=1})
 	end
 	if message_id == hash("trigger_response") and message.enter then
 		self.mouse_overlap = true

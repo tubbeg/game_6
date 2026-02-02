@@ -1,4 +1,7 @@
 images {
   image: "/assets/images/logo.png"
 }
+images {
+  image: "/assets/images/bone.png"
+}
 extrude_borders: 2
