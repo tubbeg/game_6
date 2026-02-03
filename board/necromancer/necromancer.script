@@ -1,17 +1,7 @@
-
-local function tint_score()
-	go.animate("#label", "color", go.PLAYBACK_ONCE_FORWARD, vmath.vector4(0,.5,0.1,0), go.EASING_INOUTSINE, 0.7)
-end
-
-local function set_score(self, nr)
-	self.score = nr
-	label.set_text("#label", "+ " .. tostring(self.score))
-end
-
 function init(self)
-	set_score(self,0)
-	local angle = math.rad(0)
-	go.set_rotation(vmath.quat_rotation_z(angle))
+	-- Add initialization code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
 end
 
 function final(self)
@@ -41,16 +31,11 @@ function fixed_update(self, dt)
 	-- Remove this function if not needed
 end
 
-local function update_score(self,url,nr)
-	set_score(self,nr)
-	tint_score()
-	msg.post(url,"add_score",{score=nr})
-end
-
 function on_message(self, message_id, message, sender)
-	if message_id == hash("bones") then
-		update_score(self,message.url,message.nr)
-		timer.delay(1, false, function() go.delete(".", true) end)
+	if message_id == hash("create_bone") then
+		local pos = vmath.vector3(300,300,1)
+		local id = factory.create("#factory", pos)
+		msg.post(id,"init_bone", {mouse_url=msg.url(nil,"mouse",nil)})
 	end
 end
 

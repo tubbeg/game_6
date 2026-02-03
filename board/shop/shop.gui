@@ -1,0 +1,88 @@
+script: "/board/shop/shop.gui_script"
+nodes {
+  position {
+    x: 399.0
+    y: 252.0
+  }
+  scale {
+    x: 3.113282
+    y: 4.660358
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "box"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.913375
+    y: 0.790121
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "box1"
+  parent: "box"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -19.914675
+    y: 44.631763
+  }
+  scale {
+    x: 0.138271
+    y: 0.071831
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.067
+    y: 0.0
+    z: 0.004
+  }
+  type: TYPE_BOX
+  id: "upgrades"
+  parent: "box"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 17.98745
+    y: 44.631763
+  }
+  scale {
+    x: 0.138271
+    y: 0.071831
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.067
+    y: 0.0
+    z: 0.004
+  }
+  type: TYPE_BOX
+  id: "bones"
+  parent: "box"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

@@ -1,6 +1,7 @@
 function init(self)
 	msg.post(".","acquire_input_focus")
 	self.bone_list = {}
+	self.disable_mouse = false
 end
 
 function final(self)
@@ -22,15 +23,20 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("remove_bone") then
 		print("NOT YET IMPLEMENTED")
 	end
+	if message_id == hash("toggle") then
+		self.disable_mouse = not self.disable_mouse
+	end
 end
 
 function on_input(self, action_id, action)
-	local pos = vmath.vector3(action.x, action.y, 0)
+	local pos = vmath.vector3(action.x + 30, action.y + 30, 0)
 	go.set_position(pos)
 	if action_id == hash("touch") and action.pressed then
-		for _,v in pairs(self.bone_list) do
-			msg.post(v, "clicked_bone", {action=action})
-		end	
+		if not self.disable_mouse then
+			for _,v in pairs(self.bone_list) do
+				msg.post(v, "clicked_bone", {action=action})
+			end	
+		end
 	end
 end
 

@@ -63,13 +63,31 @@ local function wall_or_mouse(message)
 	message.other_id == go.get_id("mouse") or message.other_id == go.get_id("border")
 end
 
+local function create_score(self,nr)
+
+	--local v = vmath.vector4(0,1,1,1)
+	--go.animate("#sprite", "tint", go.PLAYBACK_ONCE_BACKWARD, v, go.EASING_OUTINSINE, 0.5)
+	sprite.play_flipbook("#sprite", "react")
+	timer.delay(.2, false, function() sprite.play_flipbook("#sprite", "default") end)
+	local pos = go.get_position()
+	local id = factory.create("#factory", vmath.vector3(pos.x,pos.y,pos.z + 1))
+	msg.post(id, "bones",{nr=nr,url=msg.url(nil, "money", nil)})
+end
+
+local function set_mouse_overlap(self,message_id,message)
+	if message_id == hash("trigger_response") and message.enter then
+		self.mouse_overlap = true
+	end
+	if message_id == hash("trigger_response") and not message.enter then
+		self.mouse_overlap = false
+	end
+end
+
 function on_message(self, message_id, message, sender)
 	if message_id == hash("collision_response") then
 		--print(message.other_id)
-		if not wall_or_mouse(message) and not self.scoring then 
-			local pos = go.get_position()
-			local id = factory.create("#factory", vmath.vector3(pos.x,pos.y,pos.z + 1))
-			msg.post(id, "bones",{nr=2})
+		if not wall_or_mouse(message) and not self.scoring then
+			create_score(self,20)
 			self.scoring = true
 			timer.delay(1, false, function () self.scoring = false end)
 		end
@@ -77,16 +95,10 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("clicked_bone") and self.mouse_overlap then
 		apply_force_on_bone()
 		apply_rot_force_on_bone()
-		local pos = go.get_position()
-		local id = factory.create("#factory", vmath.vector3(pos.x,pos.y,pos.z + 1))
-		msg.post(id, "bones",{nr=1})
+		create_score(self,5)
 	end
-	if message_id == hash("trigger_response") and message.enter then
-		self.mouse_overlap = true
-	end
-	if message_id == hash("trigger_response") and not message.enter then
-		self.mouse_overlap = false
-	end
+	set_mouse_overlap(self,message_id,message)
+	if message_id == hash("init_bone") then end
 end
 
 

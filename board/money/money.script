@@ -1,17 +1,8 @@
-
-local function tint_score()
-	go.animate("#label", "color", go.PLAYBACK_ONCE_FORWARD, vmath.vector4(0,.5,0.1,0), go.EASING_INOUTSINE, 0.7)
-end
-
-local function set_score(self, nr)
-	self.score = nr
-	label.set_text("#label", "+ " .. tostring(self.score))
-end
-
 function init(self)
-	set_score(self,0)
-	local angle = math.rad(0)
-	go.set_rotation(vmath.quat_rotation_z(angle))
+	self.score = 0
+	self.next_score = 0
+	self.timer = nil
+	label.set_text(".", tostring(self.score))
 end
 
 function final(self)
@@ -21,9 +12,6 @@ function final(self)
 end
 
 function update(self, dt)
-	-- Add update code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
 end
 
 function late_update(self, dt)
@@ -41,16 +29,19 @@ function fixed_update(self, dt)
 	-- Remove this function if not needed
 end
 
-local function update_score(self,url,nr)
-	set_score(self,nr)
-	tint_score()
-	msg.post(url,"add_score",{score=nr})
-end
-
 function on_message(self, message_id, message, sender)
-	if message_id == hash("bones") then
-		update_score(self,message.url,message.nr)
-		timer.delay(1, false, function() go.delete(".", true) end)
+	local fn = function ()
+		if self.score < self.next_score then
+			self.score = self.score + 1
+			label.set_text(".", tostring(self.score))
+		else
+			timer.cancel(self.timer)
+		end
+	end
+	if message_id == hash("add_score") then
+		self.next_score = self.next_score + message.score
+		if self.timer then timer.cancel(self.timer) end
+		self.timer = timer.delay(.1, true, fn)
 	end
 end
 

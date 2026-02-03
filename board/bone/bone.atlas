@@ -1,7 +1,15 @@
-images {
-  image: "/assets/images/logo.png"
+animations {
+  id: "default"
+  images {
+    image: "/assets/images/bone1.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
 }
-images {
-  image: "/assets/images/bone.png"
+animations {
+  id: "react"
+  images {
+    image: "/assets/images/bone2.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
 }
 extrude_borders: 2
