@@ -1,6 +1,8 @@
 function init(self)
-	self.score = 2333
-	self.next_score = 2333
+	self.score = (10^6) + 2334 + 400000
+	self.next_score = (10^6) + 2334 + 400000
+	--self.score = 0
+	--self.next_score = 0
 	self.timer = nil
 	label.set_text(".", tostring(self.score))
 end
@@ -29,23 +31,36 @@ function fixed_update(self, dt)
 	-- Remove this function if not needed
 end
 
-local function shorten_number()
+local function shorten_number(nr)
+	local s = tostring(nr)
+	if nr > (10^6) then
+		local divide = nr / (10^6)
+		local floor = math.floor(divide)
+		local rem = math.fmod(divide, floor)
+		local extra = math.floor(rem * 10)
+		local new_number = floor + (extra/10)
+		s = tostring(new_number) .. "M"
+		return s
+	end
+	return s
 end
+
 
 function on_message(self, message_id, message, sender)
 	local fn = function ()
 		if self.score < self.next_score then
-			self.score = self.score + 1
-			local s = tostring(self.score)
-			if self.score > 1000 then
-				local divide = self.score / 1000
-				local floor = math.floor(divide)
-				local rem = math.fmod(divide, floor)
-				local extra = math.floor(rem * 10)
-				local new_number = floor + (extra/10)
-				print("modulator",floor,"extra",extra)
-				s = tostring(new_number) .. "k "
+			local mult = 1
+			if self.next_score > 1000 then
+				mult = mult * 10
 			end
+			if self.next_score > (10^6) then
+				mult = mult * 10
+			end
+			if self.next_score > (10^9) then
+				mult = mult * 10
+			end
+			self.score = self.score + (1 * mult)
+			local s = shorten_number(self.score)
 			label.set_text(".", s)
 		else
 			timer.cancel(self.timer)

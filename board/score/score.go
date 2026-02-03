@@ -14,7 +14,7 @@ embedded_components {
   "material: \"/builtins/fonts/label-df.material\"\n"
   ""
   scale {
-    x: 1.293541
-    y: 1.277632
+    x: 0.807587
+    y: 0.796789
   }
 }
