@@ -35,7 +35,13 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("create_bone") then
 		local pos = vmath.vector3(300,300,1)
 		local id = factory.create("#factory", pos)
-		msg.post(id,"init_bone", {mouse_url=msg.url(nil,"mouse",nil)})
+		local bone_msg =
+		{
+			mouse_url=msg.url(nil,"mouse",nil),
+			money_url=msg.url(nil,"money",nil),
+			border_url=msg.url(nil,"border",nil)
+		}
+		msg.post(id,"init_bone", bone_msg)
 	end
 end
 

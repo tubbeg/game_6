@@ -1,8 +1,10 @@
 function init(self)
 	self.mouse_overlap = false
-	local my_id = msg.url(nil, go.get_id(), nil)
-	msg.post("mouse", "add_bone", {bone_url=my_id})
 	self.scoring = false
+	self.mouse_url = nil
+	self.money_url = nil
+	self.border_url = nil
+	self.scoring_enabled = false
 end
 
 function final(self)
@@ -58,9 +60,10 @@ local function apply_rot_force_on_bone()
 end
 
 
-local function wall_or_mouse(message)
+local function wall_or_mouse(self, message)
 	return 
-	message.other_id == go.get_id("mouse") or message.other_id == go.get_id("border")
+	msg.url(nil,message.other_id,nil) == self.mouse_url or
+	msg.url(nil,message.other_id,nil) == self.border_url
 end
 
 local function create_score(self,nr)
@@ -71,7 +74,7 @@ local function create_score(self,nr)
 	timer.delay(.2, false, function() sprite.play_flipbook("#sprite", "default") end)
 	local pos = go.get_position()
 	local id = factory.create("#factory", vmath.vector3(pos.x,pos.y,pos.z + 1))
-	msg.post(id, "bones",{nr=nr,url=msg.url(nil, "money", nil)})
+	msg.post(id, "bones",{nr=nr,url=self.money_url})
 end
 
 local function set_mouse_overlap(self,message_id,message)
@@ -84,21 +87,35 @@ local function set_mouse_overlap(self,message_id,message)
 end
 
 function on_message(self, message_id, message, sender)
-	if message_id == hash("collision_response") then
+	if message_id == hash("collision_response") and self.scoring_enabled then
 		--print(message.other_id)
-		if not wall_or_mouse(message) and not self.scoring then
+		if not wall_or_mouse(self,message) and not self.scoring then
 			create_score(self,20)
 			self.scoring = true
 			timer.delay(1, false, function () self.scoring = false end)
 		end
 	end
 	if message_id == hash("clicked_bone") and self.mouse_overlap then
-		apply_force_on_bone()
-		apply_rot_force_on_bone()
-		create_score(self,5)
+		if self.scoring_enabled then 
+			apply_force_on_bone()
+			apply_rot_force_on_bone()
+			create_score(self,5)
+		end
 	end
 	set_mouse_overlap(self,message_id,message)
-	if message_id == hash("init_bone") then end
+	if message_id == hash("init_bone") then
+		self.money_url = message.money_url
+		self.mouse_url = message.mouse_url
+		self.border_url = message.border_url
+		local my_id = msg.url(nil, go.get_id(), nil)
+		msg.post(message.mouse_url, "add_bone", {bone_url=my_id})
+		local fn = function ()
+			apply_force_on_bone()
+			apply_rot_force_on_bone()
+		end
+		timer.delay(.5, false, fn)
+		timer.delay(1, false, function() self.scoring_enabled = true end)
+	end
 end
 
 

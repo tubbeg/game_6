@@ -1,4 +1,6 @@
 function init(self)
+	msg.post("necromancer", "create_bone")
+	msg.post("necromancer", "create_bone")
 end
 
 function final(self)
