@@ -1,0 +1,10 @@
+animations {
+  id: "background"
+  images {
+    image: "/assets/images/background_bone.png"
+    pivot_x: 1.0
+    pivot_y: 1.0
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+}
+extrude_borders: 2

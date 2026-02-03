@@ -9,8 +9,13 @@ embedded_components {
   "  x: 128.0\n"
   "  y: 32.0\n"
   "}\n"
+  "blend_mode: BLEND_MODE_SCREEN\n"
   "text: \"Label\"\n"
-  "font: \"/builtins/fonts/default.font\"\n"
+  "font: \"/assets/fonts/rf.font\"\n"
   "material: \"/builtins/fonts/label-df.material\"\n"
   ""
+  scale {
+    x: 1.215451
+    y: 1.376973
+  }
 }

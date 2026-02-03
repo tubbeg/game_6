@@ -2,6 +2,7 @@ function init(self)
 	msg.post(".", "acquire_input_focus")
 	local box = gui.get_node("box")
 	gui.set_enabled(box, false)
+	self.is_upgrading = false
 end
 
 function final(self)
@@ -24,15 +25,26 @@ function on_message(self, message_id, message, sender)
 end
 
 function on_input(self, action_id, action)
-	-- Add input-handling code here. The game object this script is attached to
-	-- must have acquired input focus:
-	--
-	--    msg.post(".", "acquire_input_focus")
-	--
-	-- All mapped input bindings will be received. Mouse and touch input will
-	-- be received regardless of where on the screen it happened.
-	-- Learn more: https://defold.com/manuals/input/
-	-- Remove this function if not needed
+	if action_id == hash("touch") and action.pressed then
+		local node = gui.get_node("upgrades_button")
+		local upgrades = gui.get_node("upgrades")
+		if gui.pick_node(node, action.x, action.y) then
+			self.is_upgrading = not self.is_upgrading
+			gui.set_enabled(upgrades, not gui.is_enabled(upgrades, false))
+		end
+	end
+	if not action_id then
+		local node = gui.get_node("upgrades_button")
+		if gui.pick_node(node, action.x, action.y) and not self.is_upgrading then
+			gui.play_flipbook(node, "hover")
+		else
+			if self.is_upgrading then
+				gui.play_flipbook(node, "shop")
+			else
+				gui.play_flipbook(node, "default")
+			end
+		end
+	end
 end
 
 function on_reload(self)

@@ -1,88 +1,59 @@
 script: "/board/shop/shop.gui_script"
+textures {
+  name: "shop"
+  texture: "/board/shop/shop.atlas"
+}
+textures {
+  name: "shop_button"
+  texture: "/board/shop_button/shop_button.atlas"
+}
 nodes {
   position {
-    x: 399.0
-    y: 252.0
+    x: 753.0
+    y: 41.0
   }
   scale {
-    x: 3.113282
-    y: 4.660358
-  }
-  size {
-    x: 200.0
-    y: 100.0
+    x: 11.29522
+    y: 7.38919
   }
   type: TYPE_BOX
+  texture: "shop/background"
   id: "box"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
+  position {
+    x: -5.666113
+    y: 56.704456
+  }
   scale {
-    x: 0.913375
-    y: 0.790121
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  color {
-    x: 0.0
-    z: 0.0
+    x: -0.119625
+    y: 0.17692
   }
   type: TYPE_BOX
-  id: "box1"
+  texture: "shop_button/default"
+  id: "upgrades_button"
   parent: "box"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
   position {
-    x: -19.914675
-    y: 44.631763
+    x: -3.187189
+    y: 6.631309
   }
   scale {
-    x: 0.138271
-    y: 0.071831
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  color {
-    x: 0.067
-    y: 0.0
-    z: 0.004
+    x: 0.913483
+    y: 0.63279
   }
   type: TYPE_BOX
+  texture: "shop/background"
   id: "upgrades"
   parent: "box"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 17.98745
-    y: 44.631763
-  }
-  scale {
-    x: 0.138271
-    y: 0.071831
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  color {
-    x: 0.067
-    y: 0.0
-    z: 0.004
-  }
-  type: TYPE_BOX
-  id: "bones"
-  parent: "box"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
+  enabled: false
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

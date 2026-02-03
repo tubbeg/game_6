@@ -10,7 +10,11 @@ embedded_components {
   "  y: 32.0\n"
   "}\n"
   "text: \"Label\"\n"
-  "font: \"/builtins/fonts/default.font\"\n"
+  "font: \"/assets/fonts/rf.font\"\n"
   "material: \"/builtins/fonts/label-df.material\"\n"
   ""
+  scale {
+    x: 1.293541
+    y: 1.277632
+  }
 }
