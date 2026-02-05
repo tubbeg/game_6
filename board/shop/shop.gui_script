@@ -1,7 +1,7 @@
 function init(self)
 	msg.post(".", "acquire_input_focus")
 	self.is_shopping = false
-	self.max_bones = 8
+	self.max_bones = 15
 	self.max_ribs = 2
 	self.max_ghosts = 2
 	self.max_skull = 2
@@ -27,58 +27,6 @@ function update(self, dt)
 	-- Remove this function if not needed
 end
 
-function on_message(self, message_id, message, sender)
-	if message_id == hash("dead_oil") then
-		if self.max_oil < 5 then
-			self.max_oil = self.max_oil + 1
-			local node = gui.get_node("oil_barrel_price")
-			gui.set_text(node, self.oil_price)
-		end
-	end
-	if message_id == hash("take_item") then
-		if message.item == "bone" then
-			self.max_bones = self.max_bones - 1
-			if self.max_bones < 1 then
-				local node = gui.get_node("bone_price")
-				gui.set_text(node, "MAX")
-			end
-			msg.post("necromancer", "create_bone")
-		end
-		if message.item == "skull" then 
-			self.max_skull = self.max_skull - 1
-			if self.max_skull < 1 then
-				local node = gui.get_node("skull_price")
-				gui.set_text(node, "MAX")
-			end
-			msg.post("necromancer", "create_skull")
-		end
-		if message.item == "rib" then 
-			self.max_ribs = self.max_ribs - 1
-			if self.max_ribs < 1 then
-				local node = gui.get_node("rib_price")
-				gui.set_text(node, "MAX")
-			end
-			msg.post("necromancer", "create_rib")
-		end
-		if message.item == "ghost" then 
-			self.max_ghosts = self.max_ghosts - 1
-			if self.max_ghosts < 1 then
-				local node = gui.get_node("ghost_price")
-				gui.set_text(node, "MAX")
-			end
-			msg.post("necromancer", "create_ghost")
-		end
-		if message.item == "oil" then
-			self.max_oil = self.max_oil - 1
-			if self.max_oil < 1 then
-				local node = gui.get_node("oil_barrel_price")
-				gui.set_text(node, "MAX")
-			end
-			msg.post("necromancer", "create_oil")
-		end
-	end
-end
-
 
 local function shorten_x(nr,max,s)
 	local divide = nr / max
@@ -99,6 +47,72 @@ local function shorten_number(nr)
 	end
 	return s
 end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("dead_oil") then
+		if self.max_oil < 5 then
+			self.max_oil = self.max_oil + 1
+			local node = gui.get_node("oil_barrel_price")
+			gui.set_text(node, self.oil_price)
+		end
+	end
+	if message_id == hash("take_item") then
+		if message.item == "bone" then
+			self.max_bones = self.max_bones - 1
+			local node = gui.get_node("bone_price")
+			if self.max_bones < 1 then
+				gui.set_text(node, "MAX")
+			else
+				self.bone_price = 200 + ((15 - self.max_bones) * 100)
+				gui.set_text(node, shorten_number(self.bone_price))
+			end
+			msg.post("necromancer", "create_bone")
+		end
+		if message.item == "skull" then 
+			self.max_skull = self.max_skull - 1
+			local node = gui.get_node("skull_price")
+			if self.max_skull < 1 then
+				gui.set_text(node, "MAX")
+			else
+				self.skull_price = 30000 + ((15 - self.max_skull) * 100)
+				gui.set_text(node, shorten_number(self.skull_price))
+			end
+			msg.post("necromancer", "create_skull")
+		end
+		if message.item == "rib" then 
+			self.max_ribs = self.max_ribs - 1
+			local node = gui.get_node("rib_price")
+			if self.max_ribs < 1 then
+				gui.set_text(node, "MAX")
+			else
+				self.rib_price = 3000 + ((15 - self.max_ribs) * 100)
+				gui.set_text(node, shorten_number(self.rib_price))
+			end
+			msg.post("necromancer", "create_rib")
+		end
+		if message.item == "ghost" then 
+			self.max_ghosts = self.max_ghosts - 1
+			local node = gui.get_node("ghost_price")
+			if self.max_ghosts < 1 then
+				gui.set_text(node, "MAX")
+			else
+				self.ghost_price = (10 * (10^6)) + ((15 - self.max_ghosts) * (10^6))
+				gui.set_text(node, shorten_number(self.ghost_price))
+			end
+			msg.post("necromancer", "create_ghost")
+		end
+		if message.item == "oil" then
+			self.max_oil = self.max_oil - 1
+			local node = gui.get_node("oil_barrel_price")
+			if self.max_oil < 1 then
+				gui.set_text(node, "MAX")
+			end
+			msg.post("necromancer", "create_oil")
+		end
+	end
+end
+
+
 
 local function is_purchase_x(action,action_id,x,s)
 	local node = gui.get_node(s)

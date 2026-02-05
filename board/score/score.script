@@ -12,6 +12,10 @@ function init(self)
 	set_score(self,0)
 	local angle = math.rad(0)
 	go.set_rotation(vmath.quat_rotation_z(angle))
+	self.timer = nil
+	self.max_time = 5
+	self.current_time = 0
+	self.combo = 1
 end
 
 function final(self)
@@ -41,16 +45,24 @@ function fixed_update(self, dt)
 	-- Remove this function if not needed
 end
 
-local function update_score(self,url,nr)
-	set_score(self,nr)
-	tint_score()
-	msg.post(url,"add_score",{score=nr})
-end
-
 function on_message(self, message_id, message, sender)
+	if message_id == hash("add_combo") then
+		self.combo = self.combo + 1
+		self.score = self.score * self.combo
+		label.set_text("#label", "+ " .. tostring(self.score) .. " x" .. tostring(self.combo))
+		tint_score()
+	end
 	if message_id == hash("bones") then
-		update_score(self,message.url,message.nr)
-		timer.delay(1, false, function() go.delete(".", true) end)
+		local fn = function()
+			if self.current_time > self.max_time then 
+				timer.cancel(self.timer)
+				msg.post(message.url,"add_score",{score=self.score})
+				go.delete(".", true)
+			else
+				self.current_time = self.current_time + 1
+			end
+		end
+		timer.delay(1, true,fn)
 	end
 end
 

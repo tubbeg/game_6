@@ -12,6 +12,7 @@ function init(self)
 	self.min_force = 20000
 	self.max_force = 50000
 	self.vel_dec = 0.9
+	self.score_id = nil
 	self.bone_type = "bone"
 end
 
@@ -115,9 +116,13 @@ local function create_score(self,nr)
 		end
 	end
 	timer.delay(.2, false, fn)
-	local pos = go.get_position()
-	local id = factory.create("#factory", vmath.vector3(pos.x,pos.y,pos.z + 1))
-	msg.post(id, "bones",{nr=nr,url=self.money_url})
+	if self.score_id then
+		msg.post(self.score_id, "add_combo", {type=self.bone_type})
+	else
+		local pos = go.get_position()
+		self.score_id = factory.create("#factory", vmath.vector3(pos.x,pos.y,pos.z + 1))
+		msg.post(self.score_id, "bones",{nr=nr,url=self.money_url})
+	end
 end
 
 local function set_mouse_overlap(self,message_id,message)
@@ -130,6 +135,9 @@ local function set_mouse_overlap(self,message_id,message)
 end
 
 function on_message(self, message_id, message, sender)
+	if message_id == hash("dead_score") then
+		self.score_id = nil
+	end
 	if message_id == hash("trigger_response") then
 		msg.post(message.other_id, "are_you_oil_spill")
 	end

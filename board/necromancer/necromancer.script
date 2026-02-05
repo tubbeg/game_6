@@ -2,10 +2,6 @@ function init(self)
 	self.bone_count = 0
 	self.bones = {}
 	self.score_mult = 1
-	local fn = function ()
-		
-	end
-	timer.delay(30, true, fn)
 end
 
 function final(self)
