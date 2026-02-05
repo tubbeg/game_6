@@ -17,6 +17,15 @@ function fixed_update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
+	if message_id == hash("death") then
+		for _, url in pairs(self.bone_list) do
+			local new_list = {}
+			if not message.url == url then
+				table.insert(new_list, url)
+			end
+			self.bone_list = new_list
+		end
+	end
 	if message_id == hash("add_bone") then
 		table.insert(self.bone_list, message.bone_url)
 	end

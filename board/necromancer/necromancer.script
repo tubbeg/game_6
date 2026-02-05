@@ -1,7 +1,11 @@
 function init(self)
-	-- Add initialization code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
+	self.bone_count = 0
+	self.bones = {}
+	self.score_mult = 1
+	local fn = function ()
+		
+	end
+	timer.delay(30, true, fn)
 end
 
 function final(self)
@@ -31,17 +35,92 @@ function fixed_update(self, dt)
 	-- Remove this function if not needed
 end
 
+local function length_table(t)
+	local i = 0
+	for _,_ in pairs(t) do
+		i = i + 1
+	end
+	return i
+end
+
+local function bone_count_ok(self)
+	return length_table(self.bones) < self.max_bones
+end
+
+local function bone_count_ok(self)
+	return length_table(self.bones) < self.max_bones
+end
+
+local function bone_count_ok(self)
+	return length_table(self.bones) < self.max_bones
+end
+
+local function create_bone_object(self)
+	local pos = vmath.vector3(300,300,2)
+	local id = factory.create("#factory", pos)
+	local bone_msg =
+	{
+		mouse_url=msg.url(nil,"mouse",nil),
+		money_url=msg.url(nil,"money",nil),
+		border_url=msg.url(nil,"border",nil)
+	}
+	msg.post(id,"init_bone", bone_msg)
+	return id
+end
+
+local function create_rib(self)
+	local id = create_bone_object(self)
+	msg.post(id, "update_score", {collide=1000,click=100})
+	msg.post(id, "set_bone_type", {type="rib"})
+	msg.post(id, "set_mouse")
+end
+
+local function create_skull(self)
+	local id = create_bone_object(self)
+	msg.post(id, "update_score", {collide=30000,click=100})
+	msg.post(id, "set_bone_type", {type="skull"})
+	msg.post(id, "set_mouse")
+end
+
+local function create_ghost(self)
+	local id = create_bone_object(self)
+	msg.post(id, "update_score", {collide=300000,click=100})
+	msg.post(id, "set_bone_type", {type="ghost"})
+	msg.post(id, "set_mouse")
+end
+
+local function create_oil(self)
+	local id = create_bone_object(self)
+	msg.post(id, "set_bone_type", {type="oil"})
+	msg.post(id, "update_score", {collide=0,click=0})
+	msg.post(id, "set_necromancer", {url=msg.url()})
+end
+
+local function create_bone(self)
+	local id = create_bone_object(self)
+	msg.post(id, "set_mouse")
+end
+
 function on_message(self, message_id, message, sender)
+	if message_id == hash("oil_spill") then
+		print("sending message to shop")
+		msg.post("shop", "dead_oil")
+	end
 	if message_id == hash("create_bone") then
-		local pos = vmath.vector3(300,300,1)
-		local id = factory.create("#factory", pos)
-		local bone_msg =
-		{
-			mouse_url=msg.url(nil,"mouse",nil),
-			money_url=msg.url(nil,"money",nil),
-			border_url=msg.url(nil,"border",nil)
-		}
-		msg.post(id,"init_bone", bone_msg)
+		create_bone(self)
+	end
+	if message_id == hash("create_skull") then
+		create_skull(self)
+	end
+	if message_id == hash("create_ghost") then
+		create_ghost(self)
+	end
+	if message_id == hash("create_rib") then
+		create_rib(self)
+	end
+	if message_id == hash("create_oil") then
+		print("creating oil")
+		create_oil(self)
 	end
 end
 

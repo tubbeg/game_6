@@ -1,8 +1,9 @@
 function init(self)
-	self.score = (10^6) + 2334 + 400000
-	self.next_score = (10^6) + 2334 + 400000
-	--self.score = 0
-	--self.next_score = 0
+	local debug_score = (10^9) + 300
+	self.score = 0
+	self.next_score = 0
+	self.score = debug_score
+	self.next_score = debug_score
 	self.timer = nil
 	label.set_text(".", tostring(self.score))
 end
@@ -31,22 +32,35 @@ function fixed_update(self, dt)
 	-- Remove this function if not needed
 end
 
+local function shorten_x(nr,max,s)
+	local divide = nr / max
+	local floor = math.floor(divide)
+	local rem = math.floor(math.fmod(divide,floor) * 100)
+	return tostring(floor) .. "." .. tostring(rem) .. s
+end
+
 local function shorten_number(nr)
 	local s = tostring(nr)
-	if nr > (10^6) then
-		local divide = nr / (10^6)
-		local floor = math.floor(divide)
-		local rem = math.fmod(divide, floor)
-		local extra = math.floor(rem * 10)
-		local new_number = floor + (extra/10)
-		s = tostring(new_number) .. "M"
-		return s
+	local e = math.log(nr,10)
+	if e > 9 then
+		return shorten_x(nr, (10^9), "B")
+	elseif e > 6 then
+		return shorten_x(nr, (10^6), "M")
+	elseif e > 3 then
+		return shorten_x(nr, (10^3), "k")
 	end
 	return s
 end
 
 
 function on_message(self, message_id, message, sender)
+	if message_id == hash("want_item") then
+		if self.score >= message.price then
+			msg.post(sender, "take_item", {item=message.item})
+			self.score = self.score - message.price
+			self.next_score = self.next_score - message.price
+		end
+	end
 	local fn = function ()
 		if self.score < self.next_score then
 			local mult = 1
@@ -68,6 +82,7 @@ function on_message(self, message_id, message, sender)
 	end
 	if message_id == hash("add_score") then
 		self.next_score = self.next_score + message.score
+		if self.next_score > (10^8) then msg.post("main", "break_game") end
 		if self.timer then timer.cancel(self.timer) end
 		self.timer = timer.delay(.1, true, fn)
 	end
